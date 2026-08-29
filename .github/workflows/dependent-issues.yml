@@ -16,6 +16,7 @@ on:
   # Schedule a check for every 2 hours (23rd minute).
   schedule:
     - cron: '23 */2 * * *'
+  workflow_dispatch:
 permissions:
   contents: read
   issues: write
