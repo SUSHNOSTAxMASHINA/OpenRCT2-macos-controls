@@ -4,5 +4,5 @@
 namespace OpenRCT2::Ui
 {
     int PollNativeMacOSPinch();
-}
+} // namespace OpenRCT2::Ui
 #endif

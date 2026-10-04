@@ -36,6 +36,7 @@
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/NewDrawing.h>
@@ -149,6 +150,7 @@ public:
             for (auto i = std::abs(pinch); i > 0; --i)
                 Windows::MainWindowZoom(pinch > 0, true);
         }
+
 #endif
 
         _inGameConsole.Update();
@@ -419,15 +421,14 @@ public:
 #ifdef __APPLE__
                     if (Config::Get().general.nativeMacOSControls && ViewportFindFromPoint(_cursorState.position) != nullptr)
                     {
-                        // Native trackpad scrolling is delivered through SDL's precise wheel deltas.
-                        const auto scrollX = e.wheel.preciseX != 0 ? e.wheel.preciseX : e.wheel.x;
-                        const auto scrollY = e.wheel.preciseY != 0 ? e.wheel.preciseY : e.wheel.y;
                         auto* viewport = ViewportFindFromPoint(_cursorState.position);
-                        WindowBase* targetWindow = _windowManager->GetOwner(viewport);
+                        auto* targetWindow = _windowManager->GetOwner(viewport);
                         if (targetWindow != nullptr && targetWindow->viewport != nullptr
                             && (targetWindow == WindowGetMain() || targetWindow->classification == WindowClass::viewport))
                         {
                             WindowUnfollowSprite(*targetWindow);
+                            const auto scrollX = e.wheel.preciseX != 0 ? e.wheel.preciseX : e.wheel.x;
+                            const auto scrollY = e.wheel.preciseY != 0 ? e.wheel.preciseY : e.wheel.y;
                             InputScrollViewportSmooth(scrollX, scrollY, targetWindow);
                         }
                         break;
